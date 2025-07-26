@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Meta AI Web Clone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f5f6f8;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .message {
+      background-color: #e4e6eb;
+      color: #000;
+      padding: 10px 15px;
+      border-radius: 20px;
+      margin: 5px 0;
+      max-width: 80%;
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: #0084ff;
+      color: white;
+    }
+
+    .bot {
+      align-self: flex-start;
+    }
+
+    .input-box {
+      display: flex;
+      padding: 10px;
+      background: white;
+      border-top: 1px solid #ccc;
+    }
+
+    .input-box input {
+      flex: 1;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .input-box button {
+      margin-left: 10px;
+      background: #0084ff;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .typing {
+      font-style: italic;
+      color: #999;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container" id="chat">
+    <div class="message bot">Halo! Saya Meta AI. Ada yang bisa saya bantu?</div>
+  </div>
+
+  <div class="input-box">
+    <input type="text" id="userInput" placeholder="Tanyakan sesuatu..." />
+    <button onclick="kirimPesan()">Kirim</button>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('userInput');
+
+    function kirimPesan() {
+      const pesan = input.value.trim();
+      if (pesan === '') return;
+
+      tampilPesan('user', pesan);
+      input.value = '';
+      tampilTyping();
+
+      setTimeout(() => {
+        hapusTyping();
+        tampilPesan('bot', generateBalasan(pesan));
+      }, 1000);
+    }
+
+    function tampilPesan(sender, text) {
+      const el = document.createElement('div');
+      el.className = `message ${sender}`;
+      el.textContent = text;
+      chat.appendChild(el);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function tampilTyping() {
+      const el = document.createElement('div');
+      el.className = 'typing bot';
+      el.id = 'typing';
+      el.textContent = 'Meta AI sedang mengetik...';
+      chat.appendChild(el);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function hapusTyping() {
+      const typing = document.getElementById('typing');
+      if (typing) typing.remove();
+    }
+
+    function generateBalasan(input) {
+      // Contoh respon statis
+      const lower = input.toLowerCase();
+      if (lower.includes('siapa kamu')) return 'Saya adalah Meta AI, asisten virtual cerdas.';
+      if (lower.includes('halo') || lower.includes('hai')) return 'Halo juga! Ada yang bisa saya bantu?';
+      if (lower.includes('cuaca')) return 'Maaf, saya belum terhubung ke data cuaca 😅';
+      return 'Saya masih belajar memahami itu. Coba tanya yang lain ya.';
+    }
+  </script>
+
+</body>
+</html>
